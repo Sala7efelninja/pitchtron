@@ -2,7 +2,7 @@ import argparse
 import os
 from tqdm import tqdm
 from datasets import libri_tts, selvas_multi_lbl,selvas_multispeaker_pron, public_korean_pron, check_file_integrity, generate_mel_f0, f0_mean
-from configs.korean_200113 import create_hparams
+from configs.grl_200224 import create_hparams
 
 hparams = create_hparams()
 
