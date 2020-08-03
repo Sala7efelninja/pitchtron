@@ -4,7 +4,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 from scipy import interpolate
-from configs.hparams import create_hparams
+from configs.grl_200224 import create_hparams
 hparams = create_hparams()
 '''
 change sampling rate of libritts from 24 kHz to 22.05 kHz

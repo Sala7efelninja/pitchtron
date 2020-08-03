@@ -1,4 +1,4 @@
-from configs.hparams import create_hparams
+from configs.grl_200224 import create_hparams
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 import librosa
