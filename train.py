@@ -50,12 +50,14 @@ def prepare_single_dataloaders(hparams, output_directory):
 
     if hparams.distributed_run:
         train_sampler = DistributedSampler(trainset)
+        print("not None")
         shuffle = False
     else:
         print('train_sampler=None')
         train_sampler = None
         shuffle = True
     print("sigle DataLoader start")
+    print(train_sampler)
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
