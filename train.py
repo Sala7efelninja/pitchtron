@@ -54,7 +54,7 @@ def prepare_single_dataloaders(hparams, output_directory):
     else:
         train_sampler = None
         shuffle = True
-
+    print("DataLoader start")
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
