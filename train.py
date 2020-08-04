@@ -248,7 +248,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             single_train_sampler.set_epoch(epoch)
         print("single train loader loop")
         for i, batch in single_train_loader:
-            print("line 22 passed",i)
+            print("single train loader loop ",i)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
                 learning_rate = max(
