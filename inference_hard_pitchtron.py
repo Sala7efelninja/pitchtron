@@ -47,7 +47,7 @@ test_set = TextMelLoader(audio_paths, hparams)
 datacollate = TextMelCollate(1)
 dataloader = DataLoader(test_set, num_workers=1, shuffle=False,batch_size=hparams.batch_size, pin_memory=False,
                         drop_last=False, collate_fn = datacollate)
-speaker_ids = TextMelLoader("filelists/wav_less_than_12s_158_speakers_train.txt", hparams).speaker_ids
+speaker_ids = TextMelLoader("filelists/ljspeech_train.txt", hparams).speaker_ids
 # speaker_id = torch.LongTensor([speaker_ids[speaker]]).cuda()
 
 # Load mean f0

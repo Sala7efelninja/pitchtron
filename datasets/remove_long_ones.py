@@ -9,7 +9,7 @@ for line in lines:
     if len(columns[1]) < len(reference_sentence):
         short_lines_only.append(line)
 
-new_file_list_name = '/home/admin/projects/mellotron_as_is/filelists/wav_less_than_12s_158_speakers_train.txt'
+new_file_list_name = 'filelists/ljspeech_train.txt'
 with open(new_file_list_name, 'w', encoding='utf-8') as f:
     for line in short_lines_only:
         f.write(line)
