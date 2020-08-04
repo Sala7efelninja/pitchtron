@@ -24,8 +24,8 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         # Data Parameters             #
         ################################
-        training_files='filelists/merge_korean_pron_train.txt',
-        validation_files='filelists/merge_korean_pron_valid.txt',
+        training_files='filelists/ljspeech_train.txt',
+        validation_files='filelists/ljspeech_valid.txt',
         text_cleaners=['korean_cleaners'],
         p_arpabet=1.0,
         cmudict_path="data/cmu_dictionary",

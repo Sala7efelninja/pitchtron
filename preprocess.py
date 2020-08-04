@@ -97,9 +97,9 @@ def integrate_dataset(args):
                        '/home/administrator/projects/pitchtron/filelists/public_korean_test_file_list_pron.txt'
     ]
 
-    target_train_file_list = 'filelists/merge_korean_pron_train.txt'
-    target_eval_file_list = 'filelists/merge_korean_pron_valid.txt'
-    target_test_file_list = 'filelists/merge_korean_pron_test.txt'
+    target_train_file_list = 'filelists/ljspeech_train.txt'
+    target_eval_file_list = 'filelists/ljspeech_valid.txt'
+    target_test_file_list = 'filelists/ljspeech_test.txt'
 
     # merge train lists
     _integrate(train_file_lists, target_train_file_list)
@@ -114,11 +114,11 @@ def integrate_dataset(args):
 
 # Try opening files on the filelist and write down the files with io error.
 def check_for_file_integrity(args):
-    lists = ['filelists/merge_korean_pron_train.txt', 'filelists/merge_korean_pron_valid.txt', 'filelists/merge_korean_pron_test.txt']
+    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/merge_korean_pron_test.txt']
     check_file_integrity.check_paths(lists, tqdm=tqdm)
 
 def gen_mel_f0(args):
-    lists = ['filelists/merge_korean_pron_train.txt', 'filelists/merge_korean_pron_valid.txt', 'filelists/merge_korean_pron_test.txt']
+    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/merge_korean_pron_test.txt']
     generate_mel_f0.build_from_path(lists, hparams, tqdm=tqdm)
 
 def preprocess_cal_f0_scale_per_training_speaker(args):
