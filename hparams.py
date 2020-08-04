@@ -14,7 +14,7 @@ def create_hparams(hparams_string=None, verbose=False):
         seed=1234,
         dynamic_loss_scaling=True,
         fp16_run=False,
-        distributed_run=False,
+        distributed_run=True,
         dist_backend="nccl",
         dist_url="tcp://localhost:54321",
         cudnn_enabled=True,

@@ -52,6 +52,7 @@ def prepare_single_dataloaders(hparams, output_directory):
         train_sampler = DistributedSampler(trainset)
         shuffle = False
     else:
+        print('train_sampler=None')
         train_sampler = None
         shuffle = True
     print("sigle DataLoader start")
@@ -245,7 +246,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print("single train sampler check if not none")
         if single_train_sampler is not None:
             print("not None")
-            single_train_sampler.set_epoch(epoch)
+            single_train_sampler.set_epoch(epoch) ## is none
         print("single train loader loop")
         for i, batch in single_train_loader:
             print("single train loader loop ",i)
