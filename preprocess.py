@@ -28,8 +28,8 @@ def preprocess_selvas_multispeaker_pron(args):
         # 'valid_file_list_pron_sub.txt',
         # 'test_file_list_pron_sub.txt'
         'ljspeech_train.txt',
-        'ljspeech_test.txt',
-        'ljspeech_test.txt'
+        'ljspeech_valid.txt',
+        'ljspeech_valid.txt'
 
     ]
     selvas_multispeaker_pron.build_from_path(in_dir, out_dir, filelists_name, 4, args.num_workers, tqdm=tqdm)
@@ -99,7 +99,7 @@ def integrate_dataset(args):
 
     target_train_file_list = 'filelists/ljspeech_train.txt'
     target_eval_file_list = 'filelists/ljspeech_valid.txt'
-    target_test_file_list = 'filelists/ljspeech_test.txt'
+    target_test_file_list = 'filelists/ljspeech_valid.txt'
 
     # merge train lists
     _integrate(train_file_lists, target_train_file_list)

@@ -44,7 +44,7 @@ def prepare_single_dataloaders(hparams, output_directory):
     trainset = TextMelLoader('filelists/ljspeech_train.txt', hparams, output_directory=output_directory)
     # debugging purpose
     # trainset = TextMelLoader('filelists/selvas_main_valid.txt', hparams, output_directory=output_directory)
-    valset = TextMelLoader('filelists/ljspeech_test.txt', hparams,
+    valset = TextMelLoader('filelists/ljspeech_valid.txt', hparams,
                            speaker_ids=trainset.speaker_ids)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
