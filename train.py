@@ -88,11 +88,12 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
         if not os.path.isdir(output_directory):
             os.makedirs(output_directory)
             os.chmod(output_directory, 0o775)
-        logger = Tacotron2Logger(os.path.join(output_directory, log_directory))
         print("start train")
-        print("outDir",output_directory)
-        print("logDir",log_directory)
+        print("outDir", output_directory)
+        print("logDir", log_directory)
         print("end train")
+        logger = Tacotron2Logger(os.path.join(output_directory, log_directory))
+
     else:
         logger = None
     return logger
