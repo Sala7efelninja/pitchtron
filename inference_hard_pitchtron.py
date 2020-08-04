@@ -41,7 +41,7 @@ pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
 waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'
 waveglow = torch.load(waveglow_path)['model'].cuda().eval()
 denoiser = Denoiser(waveglow).cuda().eval()
-arpabet_dict = cmudict.CMUDict('data/cmu_dictionary')
+arpabet_dict = cmudict.CMUDict('/content/drive/My Drive/GP/cmu_dictionary.txt')
 audio_paths = 'data/examples_pfp_single_sample.txt'
 test_set = TextMelLoader(audio_paths, hparams)
 datacollate = TextMelCollate(1)

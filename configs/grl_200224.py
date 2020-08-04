@@ -28,7 +28,7 @@ def create_hparams(hparams_string=None, verbose=False):
         # validation_files='filelists/wav_less_than_12s_158_speakers_valid.txt',
         text_cleaners=['korean_cleaners'],
         p_arpabet=1.0,
-        cmudict_path="data/cmu_dictionary",
+        cmudict_path="/content/drive/My Drive/GP/cmu_dictionary.txt",
 
         ################################
         # Audio Parameters             #
