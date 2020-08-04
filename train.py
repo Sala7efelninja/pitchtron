@@ -244,9 +244,12 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print("Epoch: {}".format(epoch))
 
         print("single train sampler check if not none")
+        print(single_train_sampler)
         if single_train_sampler is not None:
             print("not None")
             single_train_sampler.set_epoch(epoch) ## is none
+        else:
+            print("is none")
         print("single train loader loop")
         for i, batch in single_train_loader:
             print("single train loader loop ",i)
