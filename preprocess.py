@@ -18,7 +18,7 @@ hparams = create_hparams()
 
 def preprocess_selvas_multispeaker_pron(args):
     # in_dir = '/past_projects/DB/selvasai/selvasai_organized'
-    in_dir = 'filelists'
+    in_dir = 'filelists2'
     # in_dir = '/mnt/sdd1/selvas_emotion'
     out_dir = 'filelists'
     # in order of train-valid-text
