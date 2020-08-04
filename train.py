@@ -238,7 +238,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print("Epoch: {}".format(epoch))
         if single_train_sampler is not None:
             single_train_sampler.set_epoch(epoch)
-        for i, batch in enumerate(single_train_loader):
+        for i, batch in single_train_loader:
+            print(single_train_loader)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
                 learning_rate = max(
