@@ -33,7 +33,7 @@ stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_lengt
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
                     hparams.mel_fmax)
 # speaker = "fv02"
-checkpoint_path ='/mnt/sdc1/pitchtron/grl_200224/checkpoint_291000'
+checkpoint_path ='checkpoint'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
     # "models/pitchtron_libritts.pt"
 pitchtron = load_model(hparams).cuda().eval()

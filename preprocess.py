@@ -21,7 +21,7 @@ def preprocess_selvas_multispeaker_pron(args):
     in_dir = 'filelists2'
     # in_dir = '/mnt/sdd1/selvas_emotion'
     out_dir = 'filelists'
-    
+
     # in order of train-valid-text
     filelists_name = [
         # 'train_file_list_pron_sub.txt',
