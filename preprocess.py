@@ -114,11 +114,11 @@ def integrate_dataset(args):
 
 # Try opening files on the filelist and write down the files with io error.
 def check_for_file_integrity(args):
-    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/merge_korean_pron_test.txt']
+    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/ljspeech_valid.txt']
     check_file_integrity.check_paths(lists, tqdm=tqdm)
 
 def gen_mel_f0(args):
-    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/merge_korean_pron_test.txt']
+    lists = ['filelists/ljspeech_train.txt', 'filelists/ljspeech_valid.txt', 'filelists/ljspeech_valid.txt']
     generate_mel_f0.build_from_path(lists, hparams, tqdm=tqdm)
 
 def preprocess_cal_f0_scale_per_training_speaker(args):
