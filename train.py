@@ -50,7 +50,7 @@ def prepare_single_dataloaders(hparams, output_directory):
 
     if hparams.distributed_run:
         train_sampler = DistributedSampler(trainset)
-        print("not None")
+        print("train_sampler = DistributedSampler(trainset)")
         shuffle = False
     else:
         print('train_sampler=None')
