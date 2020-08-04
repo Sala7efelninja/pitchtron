@@ -216,8 +216,10 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     single_train_loader, single_valset, single_collate_fn, single_train_sampler = prepare_single_dataloaders(hparams, output_directory)
     train_loader, valset, collate_fn, train_sampler = prepare_dataloaders(hparams, output_directory)
+    print("dataloaders done")
     single_train_loader.dataset.speaker_ids = train_loader.dataset.speaker_ids
     single_valset.speaker_ids = train_loader.dataset.speaker_ids
+    print("dataloaders speaker ids")
     # Load checkpoint if one exists
     iteration = 0
     epoch_offset = 0
@@ -232,14 +234,19 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 learning_rate = _learning_rate
             iteration += 1  # next iteration is iteration + 1
             epoch_offset = max(0, int(iteration / len(single_train_loader)))
-
+    print("start train")
     model.train()
+    print("end train")
     is_overflow = False
     # init training loop with single speaker
     for epoch in range(epoch_offset, 30):
         print("Epoch: {}".format(epoch))
+
+        print("single train sampler check if not none")
         if single_train_sampler is not None:
+            print("not None")
             single_train_sampler.set_epoch(epoch)
+        print("single train loader loop")
         for i, batch in single_train_loader:
             print("line 22 passed",i)
             start = time.perf_counter()
