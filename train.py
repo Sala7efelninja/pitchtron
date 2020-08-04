@@ -253,7 +253,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         else:
             print("is none")
         print("single train loader loop")
-        for i, batch in single_train_loader:
+        for i, batch in enumerate(single_train_loader):
             print("single train loader loop ",i)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
