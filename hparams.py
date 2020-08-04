@@ -29,6 +29,7 @@ def create_hparams(hparams_string=None, verbose=False):
         text_cleaners=['korean_cleaners'],
         p_arpabet=1.0,
         cmudict_path="/content/drive/My Drive/GP/cmu_dictionary.txt",
+        
 
         ################################
         # Audio Parameters             #
