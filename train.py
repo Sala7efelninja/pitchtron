@@ -41,10 +41,10 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
 def prepare_single_dataloaders(hparams, output_directory):
     # Get data, data loaders and collate function ready
-    trainset = TextMelLoader('filelists/selvas_main_train.txt', hparams, output_directory=output_directory)
+    trainset = TextMelLoader('filelists/ljspeech_train.txt', hparams, output_directory=output_directory)
     # debugging purpose
     # trainset = TextMelLoader('filelists/selvas_main_valid.txt', hparams, output_directory=output_directory)
-    valset = TextMelLoader('filelists/selvas_main_valid.txt', hparams,
+    valset = TextMelLoader('filelists/ljspeech_test.txt', hparams,
                            speaker_ids=trainset.speaker_ids)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 

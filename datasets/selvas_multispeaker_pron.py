@@ -14,7 +14,6 @@ def build_from_path(in_dir, out_dir, filelist_names, spk_name_idx,num_workers=16
     print("in_dir",in_dir)
     print("out_dir",out_dir)
     print("filelist_names",filelist_names)
-    print("spk_name_idx",spk_name_idx)
     print("end selvas_multispeaker_pron")
     speakers = os.listdir(in_dir)
     for speaker in speakers:
