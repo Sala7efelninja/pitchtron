@@ -54,11 +54,12 @@ def prepare_single_dataloaders(hparams, output_directory):
     else:
         train_sampler = None
         shuffle = True
-    print("DataLoader start")
+    print("sigle DataLoader start")
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
                               drop_last=True, collate_fn=collate_fn)
+    print("single DataLoader end")
     return train_loader, valset, collate_fn, train_sampler
 
 
@@ -75,11 +76,12 @@ def prepare_dataloaders(hparams, output_directory):
     else:
         train_sampler = None
         shuffle = True
-
+    print("DataLoader start")
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
                               drop_last=True, collate_fn=collate_fn)
+    print("DataLoader end")
     return train_loader, valset, collate_fn, train_sampler
 
 
@@ -239,14 +241,14 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         if single_train_sampler is not None:
             single_train_sampler.set_epoch(epoch)
         for i, batch in single_train_loader:
-            print(single_train_loader)
+            print("line 22 passed",i)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
                 learning_rate = max(
                     hparams.learning_rate_min, learning_rate * 0.5)
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = learning_rate
-
+            print("model start", i)
             model.zero_grad()
             x, y = model.parse_batch(batch)
             y_pred = model(x)
