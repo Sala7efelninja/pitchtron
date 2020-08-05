@@ -35,6 +35,7 @@ def read_wav_np(path):
 def load_wav_to_torch(full_path):
     # scipy.wavefil.read does not take care of the case where wav is int or uint.
     # Thus, scipy.read is replaced with read_wav_np
+    print("load_wav_to_torch",full_path)
     sampling_rate, data = read_wav_np(full_path)
     return torch.FloatTensor(data.astype(np.float32)), sampling_rate
 

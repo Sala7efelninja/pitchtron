@@ -39,6 +39,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
     print("Done initializing distributed")
 
+
 def prepare_single_dataloaders(hparams, output_directory):
     # Get data, data loaders and collate function ready
     trainset = TextMelLoader('filelists/ljspeech_train.txt', hparams, output_directory=output_directory)
@@ -138,7 +139,7 @@ def load_checkpoint(checkpoint_path, model, optimizer):
     optimizer.load_state_dict(checkpoint_dict['optimizer'])
     learning_rate = checkpoint_dict['learning_rate']
     iteration = checkpoint_dict['iteration']
-    print("Loaded checkpoint '{}' from iteration {}" .format(
+    print("Loaded checkpoint '{}' from iteration {}".format(
         checkpoint_path, iteration))
     return model, optimizer, learning_rate, iteration
 
@@ -217,7 +218,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     logger = prepare_directories_and_logger(
         output_directory, log_directory, rank)
 
-    single_train_loader, single_valset, single_collate_fn, single_train_sampler = prepare_single_dataloaders(hparams, output_directory)
+    single_train_loader, single_valset, single_collate_fn, single_train_sampler = prepare_single_dataloaders(hparams,
+                                                                                                             output_directory)
     train_loader, valset, collate_fn, train_sampler = prepare_dataloaders(hparams, output_directory)
     print("dataloaders done")
     single_train_loader.dataset.speaker_ids = train_loader.dataset.speaker_ids
@@ -249,12 +251,12 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print(single_train_sampler)
         if single_train_sampler is not None:
             print("not None")
-            single_train_sampler.set_epoch(epoch) ## is none
+            single_train_sampler.set_epoch(epoch)  ## is none
         else:
             print("is none")
         print("single train loader loop")
         for i, batch in enumerate(single_train_loader):
-            print("single train loader loop ",i)
+            print("single train loader loop ", i)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
                 learning_rate = max(
@@ -297,8 +299,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
             if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
                 validate(model, criterion, single_valset, iteration,
-                        hparams.batch_size, n_gpus, single_collate_fn, logger,
-                        hparams.distributed_run, rank)
+                         hparams.batch_size, n_gpus, single_collate_fn, logger,
+                         hparams.distributed_run, rank)
                 if rank == 0:
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))
