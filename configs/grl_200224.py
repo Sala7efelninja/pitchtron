@@ -26,8 +26,7 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         training_files='filelists/ljspeech_train.txt',
         validation_files='filelists/ljspeech_valid.txt',
-
-        text_cleaners=['korean_cleaners'],
+        text_cleaners=['english_cleaners'],
         p_arpabet=1.0,
         cmudict_path="/content/drive/My Drive/GP/cmu_dictionary.txt",
 
