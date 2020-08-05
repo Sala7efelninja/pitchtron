@@ -82,7 +82,14 @@ class TextMelLoader(torch.utils.data.Dataset):
         text = tmp[1]
         speaker = tmp[2]
         lang_code = tmp[3]
-
+        if lang_code == 'xxx':
+            print("error triggered")
+            print(len(tmp))
+            print(tmp[0])
+            print(tmp[1])
+            print(tmp[2])
+            print(tmp[3])
+            print("errorRaised")
         # audiopath, text, speaker, lang_code = audiopath_and_text
         # audiopath, _, _, _ = audiopath_and_text
         # _, text, _, _ = audiopath_and_text
