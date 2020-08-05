@@ -115,6 +115,9 @@ class TextMelLoader(torch.utils.data.Dataset):
         return text_norm
 
     def __getitem__(self, index):
+        print("data_util getItem index", index)
+        print("data_util getItem list length", len(self.audiopaths_and_text))
+
         return self.get_data(self.audiopaths_and_text[index])
 
     def __len__(self):
