@@ -74,6 +74,7 @@ class TextMelLoader(torch.utils.data.Dataset):
 
     def get_data(self, audiopath_and_text):
         print("get_data", len(audiopath_and_text))
+        print("get_data", audiopath_and_text)
 
         audiopath, text, speaker, lang_code = audiopath_and_text
         # audiopath, _, _, _ = audiopath_and_text
@@ -117,7 +118,8 @@ class TextMelLoader(torch.utils.data.Dataset):
     def __getitem__(self, index):
         print("data_util getItem index", index)
         print("data_util getItem list length", len(self.audiopaths_and_text))
-
+        print("data_util getItem data[index]", self.self.audiopaths_and_text[index])
+        print("data_util getItem data[index] lengh", len(self.self.audiopaths_and_text[index]))
         return self.get_data(self.audiopaths_and_text[index])
 
     def __len__(self):
