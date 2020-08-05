@@ -7,7 +7,7 @@ The default is a set of ASCII characters that works well for English or text tha
 from text import cmudict
 
 _punctuation = '!\'",.:;? '
-_math = '#%&*+-/[]()'
+_math = '#%&*+-/[]()~'
 _special = '_@©°½—₩€$'
 _accented = 'áçéêëñöøćž'
 _numbers = '0123456789'
