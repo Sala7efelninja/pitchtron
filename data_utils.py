@@ -18,6 +18,7 @@ class TextMelLoader(torch.utils.data.Dataset):
         2) normalizes text and converts them to sequences of one-hot vectors
         3) computes mel-spectrograms and f0s from audio files.
     """
+
     def __init__(self, audiopaths_and_text, hparams, speaker_ids=None, output_directory=None):
         self.audiopaths_and_text = load_filepaths_and_text(audiopaths_and_text)
         self.text_cleaners = hparams.text_cleaners
@@ -51,7 +52,6 @@ class TextMelLoader(torch.utils.data.Dataset):
                 for key, value in self.speaker_ids.items():
                     f.write('{}: {}\n'.format(key, value))
 
-
         # random.seed(1234)
         # random.shuffle(self.audiopaths_and_text)
 
@@ -73,6 +73,7 @@ class TextMelLoader(torch.utils.data.Dataset):
         return f0
 
     def get_data(self, audiopath_and_text):
+        print("get_data", audiopath_and_text)
         audiopath, text, speaker, lang_code = audiopath_and_text
         lang_code = int(lang_code)
         text = self.get_text(text, lang_code)
@@ -88,7 +89,7 @@ class TextMelLoader(torch.utils.data.Dataset):
         if sampling_rate != self.stft.sampling_rate:
             raise ValueError("{} SR doesn't match target {} SR".format(
                 sampling_rate, self.stft.sampling_rate))
-        audio_norm = audio / self.max_wav_value # max_wav_value must be set to 1 when wav is float32 format already
+        audio_norm = audio / self.max_wav_value  # max_wav_value must be set to 1 when wav is float32 format already
         # I changed them to float32 during preprocessing so this normalization is unnecessary.
         audio_norm = audio_norm.unsqueeze(0)
         melspec = self.stft.mel_spectrogram(audio_norm)
@@ -117,6 +118,7 @@ class TextMelLoader(torch.utils.data.Dataset):
 class TextMelCollate():
     """ Zero-pads model inputs and targets based on number of frames per setep
     """
+
     def __init__(self, n_frames_per_step):
         self.n_frames_per_step = n_frames_per_step
 
@@ -158,7 +160,7 @@ class TextMelCollate():
         for i in range(len(ids_sorted_decreasing)):
             mel = batch[ids_sorted_decreasing[i]][1]
             mel_padded[i, :, :mel.size(1)] = mel
-            gate_padded[i, mel.size(1)-1:] = 1
+            gate_padded[i, mel.size(1) - 1:] = 1
             output_lengths[i] = mel.size(1)
             speaker_ids[i] = batch[ids_sorted_decreasing[i]][2]
             f0 = batch[ids_sorted_decreasing[i]][3]
