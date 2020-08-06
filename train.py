@@ -88,10 +88,10 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
         if not os.path.isdir(output_directory):
             os.makedirs(output_directory)
             os.chmod(output_directory, 0o775)
-        print("start train")
-        print("outDir", output_directory)
-        print("logDir", log_directory)
-        print("end train")
+        # print("start train")
+        # print("outDir", output_directory)
+        # print("logDir", log_directory)
+        # print("end train")
         logger = Tacotron2Logger(os.path.join(output_directory, log_directory))
 
     else:
@@ -126,6 +126,7 @@ def warm_start_model(checkpoint_path, model, ignore_layers):
 
 
 def load_checkpoint(checkpoint_path, model, optimizer):
+    print("checkpoint path",checkpoint_path)
     assert os.path.isfile(checkpoint_path)
     print("Loading checkpoint '{}'".format(checkpoint_path))
     checkpoint_dict = torch.load(checkpoint_path, map_location='cpu')
