@@ -74,23 +74,23 @@ class TextMelLoader(torch.utils.data.Dataset):
 
     def get_data(self, audiopath_and_text):
 
-        tmp = audiopath_and_text
-        print("get_data len(tmp)", len(tmp))
-        print("getdata tmp =", tmp)
-        print("getdata tmp type =", type(tmp))
-        audiopath = tmp[0]
-        text = tmp[1]
-        speaker = tmp[2]
-        lang_code = tmp[3]
-        if lang_code == 'xxx':
-            print("error triggered")
-            print(len(tmp))
-            print(tmp[0])
-            print(tmp[1])
-            print(tmp[2])
-            print(tmp[3])
-            print("errorRaised")
-        # audiopath, text, speaker, lang_code = audiopath_and_text
+        # tmp = audiopath_and_text
+        # print("get_data len(tmp)", len(tmp))
+        # print("getdata tmp =", tmp)
+        # print("getdata tmp type =", type(tmp))
+        # audiopath = tmp[0]
+        # text = tmp[1]
+        # speaker = tmp[2]
+        # lang_code = tmp[3]
+        # if lang_code == 'xxx':
+        #     print("error triggered")
+        #     print(len(tmp))
+        #     print(tmp[0])
+        #     print(tmp[1])
+        #     print(tmp[2])
+        #     print(tmp[3])
+        #     print("errorRaised")
+        audiopath, text, speaker, lang_code = audiopath_and_text
         # audiopath, _, _, _ = audiopath_and_text
         # _, text, _, _ = audiopath_and_text
         # _, _, speaker, _ = audiopath_and_text
@@ -130,10 +130,10 @@ class TextMelLoader(torch.utils.data.Dataset):
         return text_norm
 
     def __getitem__(self, index):
-        print("data_util getItem1 index", index)
-        print("data_util getItem2 list length", len(self.audiopaths_and_text))
-        print("data_util getItem3 data[index]", self.audiopaths_and_text[index])
-        print("data_util getItem4 data[index] lengh", len(self.audiopaths_and_text[index]))
+        # print("data_util getItem1 index", index)
+        # print("data_util getItem2 list length", len(self.audiopaths_and_text))
+        # print("data_util getItem3 data[index]", self.audiopaths_and_text[index])
+        # print("data_util getItem4 data[index] lengh", len(self.audiopaths_and_text[index]))
         return self.get_data(self.audiopaths_and_text[index])
 
     def __len__(self):

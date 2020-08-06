@@ -51,19 +51,15 @@ def prepare_single_dataloaders(hparams, output_directory):
 
     if hparams.distributed_run:
         train_sampler = DistributedSampler(trainset)
-        print("train_sampler = DistributedSampler(trainset)")
         shuffle = False
     else:
-        print('train_sampler=None')
         train_sampler = None
         shuffle = True
-    print("sigle DataLoader start")
     print(train_sampler)
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
                               drop_last=True, collate_fn=collate_fn)
-    print("single DataLoader end")
     return train_loader, valset, collate_fn, train_sampler
 
 
@@ -80,12 +76,10 @@ def prepare_dataloaders(hparams, output_directory):
     else:
         train_sampler = None
         shuffle = True
-    print("DataLoader start")
     train_loader = DataLoader(trainset, num_workers=1, shuffle=shuffle,
                               sampler=train_sampler,
                               batch_size=hparams.batch_size, pin_memory=False,
                               drop_last=True, collate_fn=collate_fn)
-    print("DataLoader end")
     return train_loader, valset, collate_fn, train_sampler
 
 
@@ -184,7 +178,6 @@ def validate(model, criterion, valset, iteration, batch_size, n_gpus,
 def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
           rank, group_name, hparams):
     """Training and validation logging results to tensorboard and stdout
-
     Params
     ------
     output_directory (string): directory to save checkpoints
@@ -218,13 +211,10 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     logger = prepare_directories_and_logger(
         output_directory, log_directory, rank)
 
-    single_train_loader, single_valset, single_collate_fn, single_train_sampler = prepare_single_dataloaders(hparams,
-                                                                                                             output_directory)
+    single_train_loader, single_valset, single_collate_fn, single_train_sampler = prepare_single_dataloaders(hparams, output_directory)
     train_loader, valset, collate_fn, train_sampler = prepare_dataloaders(hparams, output_directory)
-    print("dataloaders done")
     single_train_loader.dataset.speaker_ids = train_loader.dataset.speaker_ids
     single_valset.speaker_ids = train_loader.dataset.speaker_ids
-    print("dataloaders speaker ids")
     # Load checkpoint if one exists
     iteration = 0
     epoch_offset = 0
@@ -239,31 +229,22 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 learning_rate = _learning_rate
             iteration += 1  # next iteration is iteration + 1
             epoch_offset = max(0, int(iteration / len(single_train_loader)))
-    print("start train")
+
     model.train()
-    print("end train")
     is_overflow = False
     # init training loop with single speaker
     for epoch in range(epoch_offset, 30):
         print("Epoch: {}".format(epoch))
-
-        print("single train sampler check if not none")
-        print(single_train_sampler)
         if single_train_sampler is not None:
-            print("not None")
-            single_train_sampler.set_epoch(epoch)  ## is none
-        else:
-            print("is none")
-        print("single train loader loop")
+            single_train_sampler.set_epoch(epoch)
         for i, batch in enumerate(single_train_loader):
-            print("single train loader loop ", i)
             start = time.perf_counter()
             if iteration > 0 and iteration % hparams.learning_rate_anneal == 0:
                 learning_rate = max(
                     hparams.learning_rate_min, learning_rate * 0.5)
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = learning_rate
-            print("model start", i)
+
             model.zero_grad()
             x, y = model.parse_batch(batch)
             y_pred = model(x)
@@ -299,8 +280,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
             if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
                 validate(model, criterion, single_valset, iteration,
-                         hparams.batch_size, n_gpus, single_collate_fn, logger,
-                         hparams.distributed_run, rank)
+                        hparams.batch_size, n_gpus, single_collate_fn, logger,
+                        hparams.distributed_run, rank)
                 if rank == 0:
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))
@@ -366,9 +347,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                                     checkpoint_path)
 
             iteration += 1
-
-
-    print("train ended")
+    print("train_ended")
 
 
 if __name__ == '__main__':
