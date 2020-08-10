@@ -33,7 +33,7 @@ stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_lengt
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
                     hparams.mel_fmax)
 # speaker = "fv02"
-checkpoint_path ='checkpoint'
+checkpoint_path ='/content/drive/My Drive/GP/checkpoint_7500'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
     # "models/pitchtron_libritts.pt"
 pitchtron = load_model(hparams).cuda().eval()
@@ -49,7 +49,7 @@ dataloader = DataLoader(test_set, num_workers=1, shuffle=False,batch_size=hparam
                         drop_last=False, collate_fn = datacollate)
 speaker_ids = TextMelLoader("filelists/ljspeech_train.txt", hparams).speaker_ids
 # speaker_id = torch.LongTensor([speaker_ids[speaker]]).cuda()
-
+print("interference hard pitchtron")
 # Load mean f0
 with open(f0s_meta_path, 'r', encoding='utf-8-sig') as f:
     f0s_read = f.readlines()

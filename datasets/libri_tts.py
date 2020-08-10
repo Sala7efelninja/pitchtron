@@ -11,9 +11,11 @@ change sampling rate of libritts from 24 kHz to 22.05 kHz
 Never use this as is.trim is necessary.
 '''
 # TODO: trim with 60 top dB is required
+
 def build_from_path(num_workers=16, tqdm=lambda x: x):
-    train_file_list_file = 'filelists/libritts_train_clean_100_audiopath_text_sid_shorterthan10s_atleast5min_train_filelist.txt'
-    val_file_list_file = 'filelists/libritts_train_clean_100_audiopath_text_sid_atleast5min_val_filelist.txt'
+
+    train_file_list_file = hparams.training_files
+    val_file_list_file = hparams.validation_files
     executor = ProcessPoolExecutor(max_workers=num_workers)
     futures =[]
     with open(train_file_list_file, 'r', encoding='utf-8') as f:

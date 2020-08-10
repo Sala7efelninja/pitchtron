@@ -1,15 +1,13 @@
+import glob
+import os
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-import numpy as np
-import librosa
-from utils import read_wav_np, load_wav_to_torch
-import os
-from scipy.io.wavfile import write
-import torch
-import glob
-from scipy import interpolate
-from yin import compute_yin
 from random import shuffle
+
+import numpy as np
+
+from utils import load_wav_to_torch
+from yin import compute_yin
 
 
 def get_f0(audio, sampling_rate=22050, frame_length=1024,

@@ -21,6 +21,7 @@ def get_f0(audio, sampling_rate=22050, frame_length=1024,
 
     f0 = np.array(f0, dtype=np.float32)
     return f0
+
 def get_mel_and_f0(filepath, filter_length, hop_length, win_length, n_mel_channels, sampling_rate, mel_fmin, mel_fmax, f0_min, f0_max, harm_thresh):
     stft = layers.TacotronSTFT(filter_length, hop_length, win_length,
             n_mel_channels, sampling_rate, mel_fmin,

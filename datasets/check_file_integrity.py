@@ -1,13 +1,13 @@
-from configs.grl_200224 import create_hparams
+import os
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-import librosa
-from utils import read_wav_np
-import os
+
+from configs.grl_200224 import create_hparams
+
 hparams = create_hparams()
-from scipy.io.wavfile import write
 from utils import read_wav_np
-import torch
+
+
 def check_paths(lists, num_workers=16, tqdm=lambda x: x):
     files2d = [[] for i in range(len(lists))]
     futures = [[] for i in range(len(lists))]
@@ -21,7 +21,7 @@ def check_paths(lists, num_workers=16, tqdm=lambda x: x):
         for line in files2d[i]:
             path = line.split('|')[0]
             futures[i].append(executor.submit(partial(_process_utterance, path)))
-        write_metadata([future.result() for future in tqdm(futures[i])], 'filelists', 'problematic_merge_korean_pron_{}.txt'.format(names[i]))
+        write_metadata([future.result() for future in tqdm(futures[i])], 'filelists', 'problematic_merge_{}.txt'.format(names[i]))
 
 '''
 1. Read each file
