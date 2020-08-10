@@ -235,6 +235,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     is_overflow = False
     # init training loop with single speaker
     for epoch in range(epoch_offset, 30):
+        print("init training loop")
         print("Epoch: {}".format(epoch))
         if single_train_sampler is not None:
             single_train_sampler.set_epoch(epoch)
@@ -249,7 +250,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             model.zero_grad()
             x, y = model.parse_batch(batch)
             y_pred = model(x)
-
+            print(type(y_pred))
+            print(len(y_pred))
+            print(y_pred)
             loss = criterion(y_pred, y)
             if hparams.distributed_run:
                 reduced_loss = reduce_tensor(loss.data, n_gpus).item()
@@ -293,6 +296,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(30, hparams.epochs):
+        print("Main training loop")
         print("Epoch: {}".format(epoch))
         if train_sampler is not None:
             train_sampler.set_epoch(epoch)
