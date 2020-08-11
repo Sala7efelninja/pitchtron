@@ -132,6 +132,7 @@ def apply_gradient_allreduce(module):
             module.warn_on_half = True if dist._backend == dist.dist_backend.GLOO else False
         print("b")
         for p in module.state_dict().values():
+            print("looping")
             if not torch.is_tensor(p):
                 continue
             dist.broadcast(p, 0)
