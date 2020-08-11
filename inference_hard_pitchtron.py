@@ -38,7 +38,7 @@ print("start")
 #     world_size=1,
 #     rank=1,
 #     group_name="tmp")
-print("torch dist")
+
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
@@ -48,6 +48,7 @@ stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_lengt
 checkpoint_path = '/content/drive/My Drive/GP/checkpoint2/checkpoint_0'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
 # "models/pitchtron_libritts.pt"
+print("torch dist")
 pitchtron = load_model(hparams).cuda().eval()
 pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
 waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'
