@@ -14,11 +14,9 @@ High variance from reference signal gives unnatural sounding result
 '''
 print("prestart")
 import sys
-import argparse
-import json
 
 sys.path.append('waveglow/')
-print("waveglow appened")
+
 from scipy.io.wavfile import write
 import librosa
 import torch
@@ -31,8 +29,9 @@ from layers import TacotronSTFT
 from data_utils import TextMelLoader, TextMelCollate
 from text import cmudict
 
-print("start")
+
 hparams = create_hparams()
+print("start")
 dist.init_process_group(
     backend=hparams.dist_backend,
     init_method=hparams.dist_url,
