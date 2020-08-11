@@ -12,9 +12,10 @@
 TODO: Fitting reference f0 contour into target speaker vocal range (min+alpha, max-beta) by scaling would give more natural result.
 High variance from reference signal gives unnatural sounding result
 '''
+print("prestart")
 import sys
 sys.path.append('waveglow/')
-
+print("waveglow appened")
 from scipy.io.wavfile import write
 import librosa
 import torch
