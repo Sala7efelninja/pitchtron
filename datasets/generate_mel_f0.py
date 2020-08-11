@@ -20,8 +20,6 @@ def get_f0(audio, sampling_rate=22050, frame_length=1024,
     f0 = [0.0] * pad + f0 + [0.0] * pad
 
     f0 = np.array(f0, dtype=np.float32)
-    print("shape",f0.shape)
-    print("f0",f0)
     return f0
 
 def get_mel_and_f0(filepath, filter_length, hop_length, win_length, n_mel_channels, sampling_rate, mel_fmin, mel_fmax, f0_min, f0_max, harm_thresh):
@@ -44,6 +42,11 @@ def get_mel_and_f0(filepath, filter_length, hop_length, win_length, n_mel_channe
     f0 = torch.from_numpy(f0)[None]
     f0 = f0[:, :melspec.size(1)]
 
+    print("start")
+    print(f0.shape)
+    print(type(f0))
+    print(f0)
+    print("end")
     return melspec, f0
 
 def build_from_path(lists, hparams, num_workers=16, tqdm=lambda x: x):
