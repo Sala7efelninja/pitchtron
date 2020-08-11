@@ -19,7 +19,7 @@ from scipy.io.wavfile import write
 import librosa
 import torch
 from torch.utils.data import DataLoader
-
+import torch.distributed as dist
 from configs.grl_200224 import create_hparams
 from train import load_model
 from waveglow.denoiser import Denoiser
@@ -27,13 +27,14 @@ from layers import TacotronSTFT
 from data_utils import TextMelLoader, TextMelCollate
 from text import cmudict
 
+
 hparams = create_hparams()
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
                     hparams.mel_fmax)
 # speaker = "fv02"
-checkpoint_path ='/content/drive/My Drive/GP/checkpoint_7500'
+checkpoint_path ='/content/drive/My Drive/GP/checkpoint2/checkpoint_0'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
     # "models/pitchtron_libritts.pt"
 pitchtron = load_model(hparams).cuda().eval()
@@ -114,3 +115,22 @@ for key, value in speaker_ids.items():
             for j in range(len(audio)):
                 wav, _ = librosa.effects.trim(audio[j], top_db=top_db, frame_length=2048, hop_length=512)
                 write("/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker), hparams.sampling_rate, wav)
+
+
+def __self__():
+    init_distributed(hparams)
+
+
+def init_distributed(hparams):
+    assert torch.cuda.is_available(), "Distributed mode requires CUDA."
+    print("Initializing Distributed")
+
+    # Set cuda device so everything is done on the right GPU.
+
+    # Initialize distributed communication
+    dist.init_process_group(
+        backend=hparams.dist_backend, init_method=hparams.dist_url)
+
+    print("Done initializing distributed")
+
+
