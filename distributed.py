@@ -133,10 +133,11 @@ def apply_gradient_allreduce(module):
             if not torch.is_tensor(p):
                 continue
             dist.broadcast(p, 0)
-
+        print("1")
         def allreduce_params():
             if(module.needs_reduction):
                 module.needs_reduction = False
+                print(2)
                 buckets = {}
                 for param in module.parameters():
                     if param.requires_grad and param.grad is not None:
@@ -144,13 +145,14 @@ def apply_gradient_allreduce(module):
                         if tp not in buckets:
                             buckets[tp] = []
                         buckets[tp].append(param)
+                        print(3)
                 if module.warn_on_half:
                     if torch.cuda.HalfTensor in buckets:
                         print("WARNING: gloo dist backend for half parameters may be extremely slow." +
                               " It is recommended to use the NCCL backend in this case. This currently requires" +
                               "PyTorch built from top of tree master.")
                         module.warn_on_half = False
-
+                print(4)
                 for tp in buckets:
                     bucket = buckets[tp]
                     grads = [param.grad.data for param in bucket]
@@ -159,15 +161,17 @@ def apply_gradient_allreduce(module):
                     coalesced /= dist.get_world_size()
                     for buf, synced in zip(grads, _unflatten_dense_tensors(coalesced, grads)):
                         buf.copy_(synced)
+                print(5)
 
         for param in list(module.parameters()):
             def allreduce_hook(*unused):
                 Variable._execution_engine.queue_callback(allreduce_params)
             if param.requires_grad:
                 param.register_hook(allreduce_hook)
-
+        print(6)
         def set_needs_reduction(self, input, output):
             self.needs_reduction = True
 
         module.register_forward_hook(set_needs_reduction)
+        print(7)
         return module
