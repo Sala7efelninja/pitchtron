@@ -135,6 +135,7 @@ def apply_gradient_allreduce(module):
             print("looping")
             if not torch.is_tensor(p):
                 continue
+            print("error")
             dist.broadcast(p, 0)
         print("1")
         def allreduce_params():
