@@ -133,6 +133,7 @@ print("end")
 
 
 def func():
+    parser = argparse.ArgumentParser()
     args = parser.parse_args()
 
     # Parse configs.  Globals nicer in this case
