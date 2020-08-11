@@ -33,37 +33,12 @@ from text import cmudict
 
 print("start")
 hparams = create_hparams()
-
-parser = argparse.ArgumentParser()
-args = parser.parse_args()
-
-# Parse configs.  Globals nicer in this case
-with open(args.config) as f:
-    data = f.read()
-config = json.loads(data)
-global data_config
-data_config = config["data_config"]
-global dist_config
-dist_config = config["dist_config"]
-global waveglow_config
-waveglow_config = config["waveglow_config"]
-
-num_gpus = torch.cuda.device_count()
-if num_gpus > 1:
-    if args.group_name == '':
-        print("WARNING: Multiple GPUs detected but no distributed group set")
-        print("Only running 1 GPU.  Use distributed.py for multiple GPUs")
-        num_gpus = 1
-
-if num_gpus == 1 and args.rank != 0:
-    raise Exception("Doing single GPU training on rank > 0")
-
 dist.init_process_group(
     backend=hparams.dist_backend,
     init_method=hparams.dist_url,
-    world_size=num_gpus,
-    rank=args.rank,
-    group_name=args.group_name)
+    world_size=1,
+    rank=1,
+    group_name="tmp")
 print("torch dist")
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
