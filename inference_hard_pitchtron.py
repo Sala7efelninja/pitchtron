@@ -27,7 +27,7 @@ from layers import TacotronSTFT
 from data_utils import TextMelLoader, TextMelCollate
 from text import cmudict
 
-
+print("start")
 hparams = create_hparams()
 dist.init_process_group(
     backend=hparams.dist_backend, init_method=hparams.dist_url,  world_size=1,rank=1)
