@@ -352,6 +352,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                                     checkpoint_path)
 
             iteration += 1
+    save_checkpoint(model, optimizer, learning_rate, "final",
+                    checkpoint_path)
     print("train_ended")
 
 
