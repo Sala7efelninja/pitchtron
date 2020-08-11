@@ -124,11 +124,13 @@ Modifies existing model to do gradient allreduce, but doesn't change class
 so you don't need "module"
 '''
 def apply_gradient_allreduce(module):
+        print("a")
         if not hasattr(dist, '_backend'):
             module.warn_on_half = True
+
         else:
             module.warn_on_half = True if dist._backend == dist.dist_backend.GLOO else False
-
+        print("b")
         for p in module.state_dict().values():
             if not torch.is_tensor(p):
                 continue
