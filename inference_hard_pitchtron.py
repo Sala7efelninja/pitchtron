@@ -52,7 +52,7 @@ pitchtron = load_model(hparams)
 pitchtron.load_state_dict(torch.load(hparams.save_dir))
 pitchtron.cuda().eval()
 pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
-waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'
+waveglow_path = '/content/drive/My Drive/GP/dataset/pre-trainedModels/waveglow_256channels_universal_v4.pt'
 waveglow = torch.load(waveglow_path)['model'].cuda().eval()
 denoiser = Denoiser(waveglow).cuda().eval()
 arpabet_dict = cmudict.CMUDict('/content/drive/My Drive/GP/cmu_dictionary.txt')
