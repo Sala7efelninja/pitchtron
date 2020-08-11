@@ -61,6 +61,7 @@ f0s_mean = {}
 f0s_min = {}
 f0s_max = {}
 f0s_var = {}
+print("loop1")
 for i in range(len(f0s_read)):
     line = f0s_read[i].split('|')
     tmp_speaker = line[0]
@@ -72,11 +73,13 @@ for i in range(len(f0s_read)):
     f0s_max[tmp_speaker] = f0_max
     f0s_var[tmp_speaker] = f0_max - f0_min
 
+print("loop2")
 for key, value in speaker_ids.items():
     speaker = key
     target_speaker = speaker
     target_speaker_f0_mean = f0s_mean[target_speaker]
     speaker_id = torch.LongTensor([value]).cuda()
+    print("dataloader size",len(dataloader))
     for i, batch in enumerate(dataloader):
         reference_speaker = test_set.audiopaths_and_text[i][2]
         reference_speaker_f0_mean = f0s_mean[reference_speaker]
@@ -117,7 +120,9 @@ for key, value in speaker_ids.items():
             top_db=25
             for j in range(len(audio)):
                 wav, _ = librosa.effects.trim(audio[j], top_db=top_db, frame_length=2048, hop_length=512)
-                write("/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker), hparams.sampling_rate, wav)
+                write("/content/drive/My Drive/GP/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker), hparams.sampling_rate, wav)
+
+print("end")
 
 
 
