@@ -58,6 +58,10 @@ def _process_speaker(root, hparams):
         num_frames_tot += n_frames
     f0_mean = f0_sum_tot / num_frames_tot
     speaker = os.path.basename(root)
+    print("S",speaker)
+    print("min",min_tot)
+    print("max",max_tot)
+    print("mean",f0)
     return speaker, round(min_tot), round(max_tot), round(f0_mean)
 
 def write_metadata(metadata, out_file):
