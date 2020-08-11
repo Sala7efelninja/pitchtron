@@ -97,5 +97,7 @@ def _process_utterance(in_path, filter_length, hop_length, win_length, n_mel_cha
     torch.save(mel, mel_out_path)
     torch.save(f0, f0_out_path)
     print(type(f0))
+    print(f0)
     print(type(mel))
+    print(mel)
     return

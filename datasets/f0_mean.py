@@ -21,8 +21,9 @@ def get_f0(audio, sampling_rate=22050, frame_length=1024,
     f0 = np.array(f0, dtype=np.float32)
     return f0
 
+
 def build_from_path(root, hparams, num_workers=16, tqdm=lambda x: x):
-    speakers = glob.glob(os.path.join(root,'*'))
+    speakers = glob.glob(os.path.join(root, '*'))
     speakers.sort()
     executor = ProcessPoolExecutor(max_workers=num_workers)
     futures = []
@@ -31,6 +32,7 @@ def build_from_path(root, hparams, num_workers=16, tqdm=lambda x: x):
         futures.append(executor.submit(partial(_process_speaker, new_root, hparams)))
     out_file = os.path.join(root, 'f0s.txt')
     write_metadata([future.result() for future in tqdm(futures)], out_file)
+
 
 def _process_speaker(root, hparams):
     # filelist = glob.glob(os.path.join(root, 'wav_22050','*.wav'))
@@ -44,8 +46,8 @@ def _process_speaker(root, hparams):
         filepath = filelist[i]
         audio, sampling_rate = load_wav_to_torch(filepath)
         f0 = get_f0(audio.cpu().numpy(), hparams.sampling_rate,
-                         hparams.filter_length, hparams.hop_length, hparams.f0_min,
-                         hparams.f0_max, hparams.harm_thresh)
+                    hparams.filter_length, hparams.hop_length, hparams.f0_min,
+                    hparams.f0_max, hparams.harm_thresh)
         min_f0 = np.min(f0[np.nonzero(f0)])
         max_f0 = f0.max()
         if min_tot > min_f0:
@@ -58,11 +60,12 @@ def _process_speaker(root, hparams):
         num_frames_tot += n_frames
     f0_mean = f0_sum_tot / num_frames_tot
     speaker = os.path.basename(root)
-    print("S",speaker)
-    print("min",min_tot)
-    print("max",max_tot)
-    print("mean",f0)
+    print("S", speaker)
+    print("min", min_tot)
+    print("max", max_tot)
+    print("mean", f0)
     return speaker, round(min_tot), round(max_tot), round(f0_mean)
+
 
 def write_metadata(metadata, out_file):
     with open(out_file, 'w', encoding='utf-8') as f:
