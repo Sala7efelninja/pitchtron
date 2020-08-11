@@ -4,7 +4,7 @@ import time
 import argparse
 import math
 from numpy import finfo
-
+import pickle
 import torch
 from distributed import apply_gradient_allreduce
 import torch.distributed as dist
@@ -105,9 +105,9 @@ def load_model(hparams):
     if hparams.fp16_run:
         model.decoder.attention_layer.score_mask_value = finfo('float16').min
     print("2")
-    if hparams.distributed_run:
-        model = apply_gradient_allreduce(model)
-    print("3")
+    # if hparams.distributed_run:
+    #     model = apply_gradient_allreduce(model)
+    # print("3")
     return model
 
 
@@ -355,6 +355,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             iteration += 1
     save_checkpoint(model, optimizer, learning_rate, "final",
                     checkpoint_path)
+
+    torch.save(model.state_dict(), hparams.save_dir + hparams.trained_model)
+    pickle.dump(hparams.n_appear, open(hparams.save_dir + 'hparams.txt', 'wb'))
     print("train_ended")
 
 

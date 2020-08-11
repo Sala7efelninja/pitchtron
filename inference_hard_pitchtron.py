@@ -29,7 +29,6 @@ from layers import TacotronSTFT
 from data_utils import TextMelLoader, TextMelCollate
 from text import cmudict
 
-
 hparams = create_hparams()
 print("start")
 # dist.init_process_group(
@@ -49,7 +48,8 @@ checkpoint_path = '/content/drive/My Drive/GP/checkpoint2/checkpoint_0'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
 # "models/pitchtron_libritts.pt"
 print("torch dist")
-pitchtron = load_model(hparams)
+model = load_model(hparams)
+pitchtron = model.load_state_dict(torch.load(hparams.save_dir + hparams.trained_model))
 pitchtron.cuda().eval()
 pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
 waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'
@@ -134,4 +134,3 @@ for key, value in speaker_ids.items():
                     hparams.sampling_rate, wav)
 
 print("end")
-
