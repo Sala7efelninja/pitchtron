@@ -49,7 +49,7 @@ f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
 # "models/pitchtron_libritts.pt"
 print("torch dist")
 model = load_model(hparams)
-pitchtron = model.load_state_dict(torch.load(hparams.save_dir + hparams.trained_model))
+pitchtron = model.load_state_dict(torch.load(hparams.save_dir))
 pitchtron.cuda().eval()
 pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
 waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'

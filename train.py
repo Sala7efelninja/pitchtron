@@ -356,7 +356,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     save_checkpoint(model, optimizer, learning_rate, "final",
                     checkpoint_path)
 
-    torch.save(model.state_dict(), hparams.save_dir + hparams.trained_model)
+    torch.save(model.state_dict(), hparams.save_dir)
     pickle.dump(hparams.n_appear, open(hparams.save_dir + 'hparams.txt', 'wb'))
     print("train_ended")
 

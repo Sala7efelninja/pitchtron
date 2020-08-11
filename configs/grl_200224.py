@@ -20,7 +20,7 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_enabled=True,
         cudnn_benchmark=False,
         ignore_layers=['speaker_embedding.weight'],
-
+        save_dir='/content/drive/My Drive/GP/model',
         ################################
         # Data Parameters             #
         ################################
