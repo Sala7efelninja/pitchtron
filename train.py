@@ -101,12 +101,12 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
 
 def load_model(hparams):
     model = Tacotron2(hparams).cuda()
-    print("1")
+    # print("1")
     if hparams.fp16_run:
         model.decoder.attention_layer.score_mask_value = finfo('float16').min
-    print("2")
+    # print("2")
     # if hparams.distributed_run:
-    #     model = apply_gradient_allreduce(model)
+        model = apply_gradient_allreduce(model)
     # print("3")
     return model
 
@@ -251,9 +251,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             model.zero_grad()
             x, y = model.parse_batch(batch)
             y_pred = model(x)
-            print(type(y_pred))
-            print(len(y_pred))
-            print(y_pred)
+            # print(type(y_pred))
+            # print(len(y_pred))
+            # print(y_pred)
             loss = criterion(y_pred, y)
             if hparams.distributed_run:
                 reduced_loss = reduce_tensor(loss.data, n_gpus).item()
