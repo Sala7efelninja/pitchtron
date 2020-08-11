@@ -30,7 +30,7 @@ from text import cmudict
 
 hparams = create_hparams()
 dist.init_process_group(
-    backend=hparams.dist_backend, init_method=hparams.dist_url)
+    backend=hparams.dist_backend, init_method=hparams.dist_url,  world_size=1)
 print("torch dist")
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
