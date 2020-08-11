@@ -14,6 +14,9 @@ High variance from reference signal gives unnatural sounding result
 '''
 print("prestart")
 import sys
+import argparse
+import json
+
 sys.path.append('waveglow/')
 print("waveglow appened")
 from scipy.io.wavfile import write
@@ -30,17 +33,19 @@ from text import cmudict
 
 print("start")
 hparams = create_hparams()
-dist.init_process_group(
-    backend=hparams.dist_backend, init_method=hparams.dist_url,  world_size=1,rank=1)
+
+def __self__():
+    func()
 print("torch dist")
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
                     hparams.mel_fmax)
 # speaker = "fv02"
-checkpoint_path ='/content/drive/My Drive/GP/checkpoint2/checkpoint_0'
+
+checkpoint_path = '/content/drive/My Drive/GP/checkpoint2/checkpoint_0'
 f0s_meta_path = '/mnt/sdc1/pitchtron/single_init_200123/f0s_combined.txt'
-    # "models/pitchtron_libritts.pt"
+# "models/pitchtron_libritts.pt"
 pitchtron = load_model(hparams).cuda().eval()
 pitchtron.load_state_dict(torch.load(checkpoint_path)['state_dict'])
 waveglow_path = '/home/admin/projects/pitchtron_init_with_single/models/waveglow_256channels_v4.pt'
@@ -50,8 +55,8 @@ arpabet_dict = cmudict.CMUDict('/content/drive/My Drive/GP/cmu_dictionary.txt')
 audio_paths = 'data/examples_pfp_single_sample.txt'
 test_set = TextMelLoader(audio_paths, hparams)
 datacollate = TextMelCollate(1)
-dataloader = DataLoader(test_set, num_workers=1, shuffle=False,batch_size=hparams.batch_size, pin_memory=False,
-                        drop_last=False, collate_fn = datacollate)
+dataloader = DataLoader(test_set, num_workers=1, shuffle=False, batch_size=hparams.batch_size, pin_memory=False,
+                        drop_last=False, collate_fn=datacollate)
 speaker_ids = TextMelLoader("filelists/ljspeech_train.txt", hparams).speaker_ids
 # speaker_id = torch.LongTensor([speaker_ids[speaker]]).cuda()
 print("interference hard pitchtron")
@@ -80,7 +85,7 @@ for key, value in speaker_ids.items():
     target_speaker = speaker
     target_speaker_f0_mean = f0s_mean[target_speaker]
     speaker_id = torch.LongTensor([value]).cuda()
-    print("dataloader size",len(dataloader))
+    print("dataloader size", len(dataloader))
     for i, batch in enumerate(dataloader):
         reference_speaker = test_set.audiopaths_and_text[i][2]
         reference_speaker_f0_mean = f0s_mean[reference_speaker]
@@ -104,11 +109,9 @@ for key, value in speaker_ids.items():
         tmp_nd = pitch_contour.cpu().numpy()
         tmp_mask = mask.cpu().numpy()
 
-
-
         with torch.no_grad():
             # get rhythm (alignment map) using tacotron 2
-            mel_outputs, mel_outputs_postnet, gate_outputs, rhythm, reference_speaker_predicted1= pitchtron.forward(x)
+            mel_outputs, mel_outputs_postnet, gate_outputs, rhythm, reference_speaker_predicted1 = pitchtron.forward(x)
             rhythm = rhythm.permute(1, 0, 2)
 
             # Using mel as input is not generalizable. I hope there is generalizable inference method as well.
@@ -118,14 +121,46 @@ for key, value in speaker_ids.items():
         with torch.no_grad():
             audio = denoiser(waveglow.infer(mel_outputs_postnet, sigma=0.8), 0.01)[:, 0]
             audio = audio.squeeze(1).cpu().numpy()
-            top_db=25
+            top_db = 25
             for j in range(len(audio)):
                 wav, _ = librosa.effects.trim(audio[j], top_db=top_db, frame_length=2048, hop_length=512)
-                write("/content/drive/My Drive/GP/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker), hparams.sampling_rate, wav)
+                write(
+                    "/content/drive/My Drive/GP/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(
+                        reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker),
+                    hparams.sampling_rate, wav)
 
 print("end")
 
 
+def func():
+    args = parser.parse_args()
 
+    # Parse configs.  Globals nicer in this case
+    with open(args.config) as f:
+        data = f.read()
+    config = json.loads(data)
+    train_config = config["train_config"]
+    global data_config
+    data_config = config["data_config"]
+    global dist_config
+    dist_config = config["dist_config"]
+    global waveglow_config
+    waveglow_config = config["waveglow_config"]
 
+    num_gpus = torch.cuda.device_count()
+    if num_gpus > 1:
+        if args.group_name == '':
+            print("WARNING: Multiple GPUs detected but no distributed group set")
+            print("Only running 1 GPU.  Use distributed.py for multiple GPUs")
+            num_gpus = 1
 
+    if num_gpus == 1 and args.rank != 0:
+        raise Exception("Doing single GPU training on rank > 0")
+
+    dist.init_process_group(
+        backend=hparams.dist_backend,
+        init_method=hparams.dist_url,
+        world_size=num_gpus,
+        rank=args.rank
+        ,group_name=args.group_name)
+    print("called")
