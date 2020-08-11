@@ -81,6 +81,11 @@ def _process_utterance(in_path, filter_length, hop_length, win_length, n_mel_cha
     dir = os.path.dirname(f0_out_path)
     if not os.path.exists(dir):
         os.makedirs(dir)
+    print("mel_0")
+    print(in_path)
+    print(dir)
+    print(f0_out_path)
+    print(mel_out_path)
 
     # int16 is converted into float32 here
     mel, f0 = get_mel_and_f0(in_path, filter_length, hop_length, win_length, n_mel_channels, sampling_rate, mel_fmin, mel_fmax, f0_min, f0_max, harm_thresh)

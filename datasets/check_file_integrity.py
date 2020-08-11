@@ -45,8 +45,6 @@ def _process_utterance(in_path):
 
 
 
-
-
 def write_metadata(metadata, out_dir, out_file):
     with open(os.path.join(out_dir, out_file), 'w', encoding='utf-8') as f:
         for m in metadata:
