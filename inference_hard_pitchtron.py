@@ -29,6 +29,9 @@ from text import cmudict
 
 
 hparams = create_hparams()
+dist.init_process_group(
+    backend=hparams.dist_backend, init_method=hparams.dist_url)
+print("torch dist")
 hparams.batch_size = 1
 stft = TacotronSTFT(hparams.filter_length, hparams.hop_length, hparams.win_length,
                     hparams.n_mel_channels, hparams.sampling_rate, hparams.mel_fmin,
@@ -117,20 +120,6 @@ for key, value in speaker_ids.items():
                 write("/mnt/sdc1/pitchtron_experiment/different_speaker_subjective_test/grl_002/{}/sample-{:03d}_target-{}_refer-{}-grl002-relative-rescaled-f0.wav".format(reference_speaker, i * hparams.batch_size + j, speaker, reference_speaker), hparams.sampling_rate, wav)
 
 
-def __self__():
-    init_distributed(hparams)
 
-
-def init_distributed(hparams):
-    assert torch.cuda.is_available(), "Distributed mode requires CUDA."
-    print("Initializing Distributed")
-
-    # Set cuda device so everything is done on the right GPU.
-
-    # Initialize distributed communication
-    dist.init_process_group(
-        backend=hparams.dist_backend, init_method=hparams.dist_url)
-
-    print("Done initializing distributed")
 
 
