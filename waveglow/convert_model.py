@@ -68,5 +68,5 @@ if __name__ == '__main__':
     new_model_path = sys.argv[2]
     model = torch.load(old_model_path)
     model['model'] = update_model(model['model'])
-    torch.save(model, new_model_path)
+    torch.save(model, '/content/drive/My Drive/GP/waveglow/')
     
